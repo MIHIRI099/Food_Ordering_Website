@@ -1,2 +1,2 @@
-# food_ordering_website
+# Food_Ordering_Website
 HCI_project
