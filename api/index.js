@@ -17,7 +17,7 @@ app.use(cors(
 ));
 
 
-mongoose.connect('process.env.MONGO_URL');
+mongoose.connect('mongodb+srv://db1:MIHIRI@cluster0.cjok5ry.mongodb.net/?retryWrites=true&w=majority');
 
 app.get('/test',(req,res) => {
         res.json('test ok');
@@ -40,4 +40,28 @@ catch(err){
 }
 }); 
 
+
+
+  app.post('/login', async (req, res) => {
+        const { email, password } = req.body;
+    
+        const userDoc = await User.findOne({ email });
+    
+        if (userDoc) {
+            // Check if the provided password matches the stored password
+            const passwordMatch = bcrypt.compareSync(password, userDoc.password);
+    
+            if (passwordMatch) {
+                // Passwords match, login is successful
+                res.json({ status: 'success', message: 'Login successful' });
+            } else {
+                // Passwords do not match, login failed
+                res.status(401).json({ status: 'error', message: 'Login failed' });
+            }
+        } else {
+            // User not found, login failed
+            res.status(401).json({ status: 'error', message: 'Login failed' });
+        }
+    });
+    
 app.listen(9000);   
